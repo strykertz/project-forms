@@ -110,17 +110,31 @@ body {
     background-color: #0c5cd3;
 }
 
-
-
-
 #wrapper{
     display: flex;
-    margin-left: 70%;
+    margin-left: 80%;
 
 }
 
 #div-salvar {
     margin-left: 45%;
+}
+
+#div-text-area {
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    background-color: lightgray;
+    padding: 50px;
+    width: 75%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 120px;
+    border-radius: 15px;
+    border: 1px solid;
+}
+
+#div-buttons-approvers{
+    margin-top: 20px;
 }
 
 

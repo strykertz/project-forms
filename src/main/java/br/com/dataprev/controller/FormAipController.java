@@ -1,21 +1,19 @@
 package br.com.dataprev.controller;
 
-import br.com.dataprev.entity.EmailSenderEntity;
 import br.com.dataprev.entity.FormAipEntity;
 import br.com.dataprev.service.EmailSenderService;
 import br.com.dataprev.service.FormAipService;
+import jakarta.mail.MessagingException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class FormAipController {
 
     private final FormAipService formAipService;
     private final EmailSenderService emailSenderService;
-
 
     public FormAipController(FormAipService formAipService, EmailSenderService emailSenderService) {
         this.formAipService = formAipService;
@@ -109,20 +107,44 @@ public class FormAipController {
         return mv;
     }
 
-    @GetMapping("/approveAip/{id}")
-    public ModelAndView approveAip(@PathVariable("id") Long id){
-        ModelAndView mv = new ModelAndView("historico-aip");
-        FormAipEntity formAipById = formAipService.getFormAipById(id);
+    @GetMapping("/approveAip")
+    public ModelAndView approveAip() {
 
+        ModelAndView mv = new ModelAndView("approve-aip");
+
+        List<FormAipEntity> allAip = formAipService.getAllAip();
+
+        List<FormAipEntity> collect1 = allAip.stream().peek( c -> {
+            if(c.isTrataDadoPessoal() || c.isDadoSensivel()) {
+                c.setCriticidade("Muito Alto");
+                c.setAnalise("Em Análise");
+            } else {
+                c.setCriticidade("Média");
+                c.setAnalise("Aprovado");
+            }
+        }).toList();
+
+        List<FormAipEntity> emAnalise = collect1.stream()
+                .filter(i -> i.getAnalise().equals("Em Análise")).toList();
+
+        mv.addObject("formsAip", emAnalise);
+
+        return mv;
+    }
+
+    @PostMapping("/historicoApprove")
+    public ModelAndView historicoAipApprove(@RequestParam Long id) throws MessagingException {
+        ModelAndView mv = new ModelAndView("historico-aip-approve");
+        FormAipEntity formAipById = formAipService.getFormAipById(id);
         mv.addObject("getFormAip", formAipById);
 
         return mv;
     }
 
-    @GetMapping("/enviar-email")
-    public void testeEmail(EmailSenderEntity emailSenderEntity){
-        emailSenderService.sendAipEmail(emailSenderEntity);
+    @PostMapping("/enviar-email")
+    public void sendEmail() throws MessagingException {
+
+        emailSenderService.sendEmail("alexandre.antonelli@dataprev.gov.br");
+
     }
-
-
 }
