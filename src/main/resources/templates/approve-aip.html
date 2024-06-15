@@ -8,7 +8,45 @@
 </head>
 <body>
 
-<div th:include="historico-aip::approve-aip"></div>
+<div th:include="nav-bar::navbar"></div>
+
+<div id="div-table">
+    <table id="table-saved-aip" class=" table table-striped">
+        <thead >
+        <tr id="table-head">
+            <th scope="col">AIP</th>
+            <th scope="col">Sigla</th>
+            <th scope="col">Nome do Projeto</th>
+            <th scope="col">Criticidade</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <!--/*@thymesVar id="formsAip" type="java"*/-->
+        <tr th:each="formAip: ${formsAip}">
+
+            <!--/*@thymesVar id="id" type="java"*/-->
+            <td th:text="${formAip.id}"></td>
+            <!--/*@thymesVar id="sigla" type="java"*/-->
+            <td th:text="${formAip.sigla}"></td>
+            <!--/*@thymesVar id="nomeProjeto" type="java"*/-->
+            <td th:text="${formAip.nomeProjeto}"></td>
+            <!--/*@thymesVar id="criticidade" type="java"*/-->
+            <td th:text="${formAip.criticidade}"></td>
+            <td th:text="${formAip.analise}"></td>
+
+            <td>
+                <form th:action="@{/historicoApprove}" method="POST">
+                    <input type="hidden" name="id" th:value="${formAip.id}"/>
+                    <input type="submit" value="Detalhes" class="btn btn-primary" />
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 
 </body>
