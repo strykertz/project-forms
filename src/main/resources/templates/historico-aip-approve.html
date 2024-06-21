@@ -13,7 +13,7 @@
 <body>
 <div th:include="nav-bar::navbar"></div>
 
-<form th:fragment="approve-aip" id="div-form" method="POST" action="#" th:action="@{/update/{id}(id=${getFormAip.id})}" th:object="${getFormAip}" >
+<form id="div-form" method="POST" action="#" th:action="@{/update/{id}(id=${getFormAip.id})}" th:object="${getFormAip}" >
 
    <div id="wrapper">
        <div id="id-return">
@@ -82,17 +82,49 @@
 
 <div id="div-text-area">
 
-    <div class="form-group">
-        <label for="exampleFormControlTextarea1">Observação: </label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-    </div>
+
 
     <div id="div-buttons-approvers">
 
-        <form th:action="@{/enviar-email}" method="post">
-            <input  id="div-salvar" type="submit" value="Aprovar" class="btn btn-success" />
+        <form method="POST" th:action="@{/sendEmail}" th:object="${emailSender}">
+
+            <div class="form-group">
+                <label for="textAreaObservacao">Observação: </label>
+                <!--/*@thymesVar id="observacao" type="java"*/-->
+                <textarea class="form-control" id="textAreaObservacao" rows="3" th:field="*{observacao}"></textarea>
+            </div>
+
+
+            <input type="hidden" name="approved" id="approved">
+            <input type="hidden" name="rejected" id="rejected">
+            <input type="hidden" name="inconsistent" id="inconsistent">
+
+            <input id="div-salvar" type="submit" value="Aprovar" class="btn btn-success"  onclick="aprovar()"/>
+            <input id="div-incorrect" type="submit" value="Rejeitar" class="btn btn-danger" onclick="rejeitar()"/>
+            <input id="div-rejeitar" type="submit" value="Negar" class="btn btn-warning" onclick="negar()"/>
         </form>
-        <input  id="div-rejeitar" type="submit" value="Rejeitar" class="btn btn-danger" />
+
+        <script type="text/javascript">
+            function aprovar() {
+                document.getElementById("approved").value = true;
+                document.getElementById("rejected").value = false;
+                document.getElementById("inconsistent").value = false;
+            }
+
+            function rejeitar() {
+                document.getElementById("approved").value = false;
+                document.getElementById("rejected").value = true;
+                document.getElementById("inconsistent").value = false;
+            }
+
+            function negar() {
+                document.getElementById("approved").value = false;
+                document.getElementById("rejected").value = false;
+                document.getElementById("inconsistent").value = true;
+            }
+        </script>
+
+
     </div>
     <div>
     </div>

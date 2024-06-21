@@ -38,7 +38,7 @@
             <td th:text="${formAip.analise}"></td>
 
             <td>
-                <form th:action="@{/historicoApprove}" method="POST">
+                <form th:action="@{/historicoApprove}" method="POST" >
                     <input type="hidden" name="id" th:value="${formAip.id}"/>
                     <input type="submit" value="Detalhes" class="btn btn-primary" />
                 </form>

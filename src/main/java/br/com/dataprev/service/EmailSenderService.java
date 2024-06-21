@@ -16,7 +16,7 @@ import java.util.Properties;
 @Service
 public class EmailSenderService {
 
-    final String username = "marcus-franco@live.com";
+    final String username = "ze.petronni@hotmail.com";
     final String password = "(blackswan)";
 
 
@@ -30,21 +30,21 @@ public class EmailSenderService {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse("marcusvgf16@gmail.com"));
+                    InternetAddress.parse("marcus-franco@live.com"));
 
-            if(("sim").equals(emailSenderEntity.getApproved())){
+            if(emailSenderEntity.isApproved()){
                 message.setSubject("AIP Aprovado");
-                message.setText("O seu AIP foi aprovado!");
+                message.setText("O seu AIP foi aprovado!" + emailSenderEntity.getObservacao());
             }
 
-            if(("sim").equals(emailSenderEntity.getRejected())){
+            if(emailSenderEntity.isRejected()){
                 message.setSubject("AIP Rejeitado");
-                message.setText("O seu AIP foi Rejeitado!");
+                message.setText("O seu AIP foi Rejeitado!" + emailSenderEntity.getObservacao());
 
             }
-            if(("sim").equals(emailSenderEntity.getRejected())){
+            if(emailSenderEntity.isInconsistent()){
                 message.setSubject("AIP Inconsistente");
-                message.setText("Foi identificado inconsistência no seu AIP!");
+                message.setText("Foi identificado inconsistência no seu AIP!" + emailSenderEntity.getObservacao());
 
             }
 

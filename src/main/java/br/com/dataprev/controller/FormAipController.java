@@ -1,9 +1,10 @@
 package br.com.dataprev.controller;
 
+import br.com.dataprev.entity.EmailSenderEntity;
 import br.com.dataprev.entity.FormAipEntity;
 import br.com.dataprev.service.EmailSenderService;
 import br.com.dataprev.service.FormAipService;
-import jakarta.mail.MessagingException;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -133,7 +134,7 @@ public class FormAipController {
     }
 
     @PostMapping("/historicoApprove")
-    public ModelAndView historicoAipApprove(@RequestParam Long id) throws MessagingException {
+    public ModelAndView historicoAipApprove(@RequestParam Long id)  {
         ModelAndView mv = new ModelAndView("historico-aip-approve");
         FormAipEntity formAipById = formAipService.getFormAipById(id);
         mv.addObject("getFormAip", formAipById);
@@ -141,10 +142,18 @@ public class FormAipController {
         return mv;
     }
 
-    @PostMapping("/enviar-email")
-    public void sendEmail() throws MessagingException {
+    @GetMapping("/emailForm")
+    public String showEmailForm(Model model) {
+        model.addAttribute("emailSender", new EmailSenderEntity());
+        return "emailForm";  // nome do template
+    }
 
-        emailSenderService.sendEmail("alexandre.antonelli@dataprev.gov.br");
+    @PostMapping("/sendEmail")
+    public ModelAndView EnviarEmail(@ModelAttribute EmailSenderEntity emailSenderEntity ) {
+        ModelAndView mv = new ModelAndView();
 
+        emailSenderService.sendAipEmail(emailSenderEntity);
+        mv.addObject("emailSender", emailSenderEntity);
+        return new ModelAndView("redirect:/approveAip");
     }
 }
