@@ -39,18 +39,18 @@ public class FormAipService {
 
    public FormAipEntity updateFormAip(Long id, FormAipEntity formAip) {
 
-        FormAipEntity referenceById = formAipPersistence.getReferenceById(id);
+        FormAipEntity AipEntity = formAipPersistence.getReferenceById(id);
 
-        referenceById.setNomeProjeto(formAip.getNomeProjeto());
-        referenceById.setSigla(formAip.getSigla());
-        referenceById.setDadoSensivel(formAip.isDadoSensivel());
-        referenceById.setContextoTratamentoDadoPessoal(formAip.getContextoTratamentoDadoPessoal());
-        referenceById.setTratamentoLargaEscala(formAip.isTratamentoLargaEscala());
-        referenceById.setVolumeRegistroTitular(formAip.getVolumeRegistroTitular());
-        referenceById.setMonitoramentoVideo(formAip.isMonitoramentoVideo());
-        referenceById.setTrataDadoPessoal(formAip.isTrataDadoPessoal());
+        AipEntity.setNomeProjeto(formAip.getNomeProjeto());
+        AipEntity.setSigla(formAip.getSigla());
+        AipEntity.setDadoSensivel(formAip.isDadoSensivel());
+        AipEntity.setContextoTratamentoDadoPessoal(formAip.getContextoTratamentoDadoPessoal());
+        AipEntity.setTratamentoLargaEscala(formAip.isTratamentoLargaEscala());
+        AipEntity.setVolumeRegistroTitular(formAip.getVolumeRegistroTitular());
+        AipEntity.setMonitoramentoVideo(formAip.isMonitoramentoVideo());
+        AipEntity.setTrataDadoPessoal(formAip.isTrataDadoPessoal());
 
-        return formAipPersistence.save(referenceById);
+        return formAipPersistence.save(AipEntity);
 
     }
 
