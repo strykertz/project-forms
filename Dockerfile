@@ -1,14 +1,14 @@
 FROM ubuntu:latest AS builder
 
 RUN apt-get update
-RUN apt install default-jre
+RUN apt-get install openjdk-17-jdk -y
 
 COPY . .
 
 RUN apt-get install maven -y
 RUN mvn clean install
 
-FROM openjdk:22-jdk-slim
+FROM openjdk:17-jdk-slim
 
 EXPOSE 8082
 
