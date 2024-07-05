@@ -14,7 +14,7 @@
     <name>springboot-project</name>
     <description>springboot-project</description>
     <properties>
-        <java.version>22</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
