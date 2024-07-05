@@ -48,7 +48,7 @@ public class FormAipController {
         mv.addObject("newFormAip", formAip);
         formAipService.insertFormAip(formAip);
 
-        return mv;
+        return new ModelAndView("redirect:/buscar-todos-aip");
     }
 
     @GetMapping("/new-form-aip")

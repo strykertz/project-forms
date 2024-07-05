@@ -24,6 +24,7 @@
                     <th scope="col">Nome do Projeto</th>
                     <th scope="col">Criticidade</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Revisor</th>
                     <th scope="col">Ações</th>
                 </tr>
                 </thead>
@@ -34,6 +35,7 @@
                     <td th:text="${formAip.nomeProjeto}"></td>
                     <td th:text="${formAip.criticidade}"></td>
                     <td th:text="${formAip.analise}"></td>
+                    <td></td>
                     <td>
                         <div class="d-flex justify-content-around">
                             <form th:action="@{/getAip}" method="post" class="me-2">
