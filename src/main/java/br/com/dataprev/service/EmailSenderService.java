@@ -21,8 +21,6 @@ public class EmailSenderService {
 
 
     public void sendAipEmail(EmailSenderEntity emailSenderEntity) {
-
-
         Session session = getSession();
 
         try {

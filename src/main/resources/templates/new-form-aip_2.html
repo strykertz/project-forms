@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal CGSI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .navbar {
+            background-color: #007bff; /* cor de fundo da navbar */
+            color: white; /* cor do texto da navbar */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .sidebar {
+            width: 450px;
+            background-color: darkgray;
+            padding: 10px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            overflow-y: auto;
+            margin-top: 56px; /* altura da navbar */
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #ddd;
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .sidebar a:hover {
+            background-color: #ccc;
+        }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-left: 450px; /* largura da sidebar */
+            margin-top: 56px; /* altura da navbar */
+        }
+        .form-container {
+            width: 100%;
+            max-width: 900px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .form-offset {
+            margin-bottom: 300px; /* ajuste esse valor conforme necessário */
+        }
+
+        .form-group {
+            padding-bottom: 10px;
+        }
+    </style>
+    <script>
+        function toggleSection(sectionId) {
+            var sections = document.getElementsByClassName('section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function showDialog() {
+            var myModal = new bootstrap.Modal(document.getElementById('successModal'));
+            myModal.show();
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault(); // Impede o envio real do formulário
+            showDialog();
+        }
+
+        function enableFields() {
+            var fields = document.querySelectorAll('.form-control[disabled]');
+            fields.forEach(function (field) {
+                field.disabled = false;
+            });
+        }
+
+        function toggleSection(sectionId) {
+            var sections = document.getElementsByClassName('section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function showDialog() {
+            var myModal = new bootstrap.Modal(document.getElementById('successModal'));
+            myModal.show();
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault(); // Impede o envio real do formulário
+            showDialog();
+        }
+
+        function enableFields() {
+            var fields = document.querySelectorAll('.form-control[disabled]');
+            fields.forEach(function (field) {
+                field.disabled = false;
+            });
+        }
+    </script>
+</head>
+<body>
+<div th:replace="nav-bar::navbar" class="navbar"></div>
+
+<div class="sidebar">
+    <a href="#" onclick="toggleSection('section1')">Seção 1</a>
+    <a href="#" onclick="toggleSection('section2')">Seção 2</a>
+    <a href="#" onclick="toggleSection('section3')">Seção 3</a>
+    <a href="#" onclick="toggleSection('section4')">Seção 4</a>
+</div>
+
+<div class="main-content form-offset">
+    <div class="form-container">
+        <div id="wrapper" class="mb-3">
+            <button id="id-return-a" class="btn btn-secondary" onclick="history.back()">Voltar</button>
+        </div>
+        <form id="div-form" action="#" method="POST" th:action="@{/createNewAip}" th:object="${newFormAip}">
+            <div id="section1" class="section active">
+                <h2>Seção 1</h2>
+                <div class="form-group">
+                    <label for="sigla" class="form-label">Informe a SIGLA da área responsável: </label>
+                    <!--/*@thymesVar id="contextoTratamentoDadoPessoal" type="java"*/-->
+                    <input type="text" class="form-control" id="sigla" name="sigla" th:value="${sigla}">
+                </div>
+                <div class="form-group">
+                    <label for="nomeProjeto" class="form-label">Identifique o Sistema/Projeto:</label>
+                    <!--/*@thymesVar id="contextoTratamentoDadoPessoal" type="java"*/-->
+                    <input type="text" class="form-control" id="nomeProjeto" name="nomeProjeto" th:value="${nomeProjeto}">
+                </div>
+                <div class="form-group">
+                    <label for="volumeRegistroTitular" class="form-label">Estime o volume de registros de titulares de dados a serem manipulados:</label>
+                    <!--/*@thymesVar id="contextoTratamentoDadoPessoal" type="java"*/-->
+                    <input type="number" class="form-control" id="volumeRegistroTitular" name="volumeRegistroTitular" th:value="${volumeRegistroTitular}">
+                </div>
+                <div class="form-group">
+                    <label for="contextoTratamentoDadoPessoal" class="form-label">Qual é o contexto do tratamento de dados pessoais?</label>
+                    <!--/*@thymesVar id="contextoTratamentoDadoPessoal" type="java"*/-->
+                    <input type="text" class="form-control" id="contextoTratamentoDadoPessoal" name="contextoTratamentoDadoPessoal"  th:value="${contextoTratamentoDadoPessoal}">
+                </div>
+                <div class="form-group">
+                    <label class="form-check-label" for="dadoSensivel">
+                        Existe a possibilidade tratamento de dados pessoais sensíveis?
+                    </label>
+                    <input class="form-check-input" type="checkbox" id="dadoSensivel" name="dadoSensivel" th:field="*{dadoSensivel}" th:value="*{dadoSensivel}"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-check-label" for="dadosPessoais">
+                        Trata Dados Pessoais?
+                    </label>
+                    <input class="form-check-input" type="checkbox" id="dadosPessoais" name="dadosPessoais" th:field="*{trataDadoPessoal}" th:value="*{trataDadoPessoal}">
+                </div>
+                <div class="form-group">
+                    <label class="form-check-label" for="monitoramentoVideo" >
+                        Envolve monitoramento por vídeo de pessoas ou áreas públicas (câmeras internas/externas)?
+                    </label>
+                    <input class="form-check-input" type="checkbox"  id="monitoramentoVideo" name="monitoramentoVideo" th:field="*{monitoramentoVideo}" th:value="*{monitoramentoVideo}">
+                </div>
+                <div class="form-group">
+                    <label class="form-check-label" for="tratamentoLargaEscala" >
+                        Há tratamento em larga escala (mais de 1 milhão de titulares)?
+                    </label>
+                    <input class="form-check-input" type="checkbox"  id="tratamentoLargaEscala" th:field="*{tratamentoLargaEscala}" th:value="*{tratamentoLargaEscala}">
+
+                </div>
+                <button type="button" class="btn btn-primary" onclick="toggleSection('section2')">Próxima Seção</button>
+            </div>
+
+            <div id="section2" class="section">
+                <h2>Seção 2</h2>
+                <div class="form-group">
+                    <label for="field2-1">Campo 2-1:</label>
+                    <input type="text" class="form-control" id="field2-1" name="field2-1" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field2-2">Campo 2-2:</label>
+                    <input type="text" class="form-control" id="field2-2" name="field2-2" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field2-3">Campo 2-3:</label>
+                    <input type="text" class="form-control" id="field2-3" name="field2-3" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field2-4">Campo 2-4:</label>
+                    <input type="text" class="form-control" id="field2-4" name="field2-4" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field2-5">Campo 2-5:</label>
+                    <input type="text" class="form-control" id="field2-5" name="field2-5" disabled>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="toggleSection('section3')">Próxima Seção</button>
+            </div>
+
+            <div id="section3" class="section">
+                <h2>Seção 3</h2>
+                <div class="form-group">
+                    <label for="field3-1">Campo 3-1:</label>
+                    <input type="text" class="form-control" id="field3-1" name="field3-1" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field3-2">Campo 3-2:</label>
+                    <input type="text" class="form-control" id="field3-2" name="field3-2" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field3-3">Campo 3-3:</label>
+                    <input type="text" class="form-control" id="field3-3" name="field3-3" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field3-4">Campo 3-4:</label>
+                    <input type="text" class="form-control" id="field3-4" name="field3-4" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field3-5">Campo 3-5:</label>
+                    <input type="text" class="form-control" id="field3-5" name="field3-5" disabled>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="toggleSection('section4')">Próxima Seção</button>
+            </div>
+
+            <div id="section4" class="section">
+                <h2>Seção 4</h2>
+                <div class="form-group">
+                    <label for="field4-1">Campo 4-1:</label>
+                    <input type="text" class="form-control" id="field4-1" name="field4-1" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field4-2">Campo 4-2:</label>
+                    <input type="text" class="form-control" id="field4-2" name="field4-2" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field4-3">Campo 4-3:</label>
+                    <input type="text" class="form-control" id="field4-3" name="field4-3" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field4-4">Campo 4-4:</label>
+                    <input type="text" class="form-control" id="field4-4" name="field4-4" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="field4-5">Campo 4-5:</label>
+                    <input type="text" class="form-control" id="field4-5" name="field4-5" disabled>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary">Salvar</button>
+                    <button type="submit" class="btn btn-success">Enviar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-t5b4Gv35xt/Yjw7dP6Hgy+uf0Ul3GRy/tJAz5n/8ybNtr36uUBODuZK/4A6PKsLA" crossorigin="anonymous"></script>
+</body>
+</html>

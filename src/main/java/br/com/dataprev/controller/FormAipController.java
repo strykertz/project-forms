@@ -33,17 +33,17 @@ public class FormAipController {
     }
 
     @PostMapping("/delete")
-    public String deleteAipById(@RequestParam Long id) {
+    public ModelAndView deleteAipById(@RequestParam Long id) {
 
         formAipService.deleteFormAipById(id);
-        return "redirect:home";
+        return new ModelAndView("redirect:/buscar-todos-aip");
     }
 
 
     @PostMapping("/createNewAip")
     public ModelAndView createNewAip(FormAipEntity formAip) {
 
-        ModelAndView mv = new ModelAndView("new-form-aip");
+        ModelAndView mv = new ModelAndView("new-form-aip_2");
 
         mv.addObject("newFormAip", formAip);
         formAipService.insertFormAip(formAip);
@@ -53,7 +53,7 @@ public class FormAipController {
 
     @GetMapping("/new-form-aip")
     public ModelAndView getFormAip() {
-        ModelAndView mv = new ModelAndView("new-form-aip");
+        ModelAndView mv = new ModelAndView("new-form-aip_2");
         return mv.addObject("newFormAip", new FormAipEntity());
 
     }

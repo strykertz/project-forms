@@ -2,103 +2,202 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Portal CGSI</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link th:href="@{/style.css}" rel="stylesheet"/>
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sidebars/">
-
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .navbar {
+            background-color: #007bff; /* cor de fundo da navbar */
+            color: white; /* cor do texto da navbar */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: darkgray;
+            padding: 10px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            overflow-y: auto;
+            margin-top: 56px; /* altura da navbar */
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #ddd;
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .sidebar a:hover {
+            background-color: #ccc;
+        }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            margin-left: 250px; /* largura da sidebar */
+            margin-top: 56px; /* altura da navbar */
+        }
+        .form-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .form-control {
+            border-radius: 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .btn-close {
+            float: right;
+        }
+        #wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        #id-return-a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        #id-return-a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<div th:include="nav-bar::navbar"></div>
+<div th:include="nav-bar::navbar" class="navbar"></div>
 
-<form th:fragment="approve-aip" id="div-form" method="POST" action="#" th:action="@{/update/{id}(id=${getFormAip.id})}" th:object="${getFormAip}" >
+<div class="sidebar">
+    <a href="#" onclick="toggleSection('section1')">Seção 1</a>
+    <a href="#" onclick="toggleSection('section2')">Seção 2</a>
+    <a href="#" onclick="toggleSection('section3')">Seção 3</a>
+    <a href="#" onclick="toggleSection('section4')">Seção 4</a>
+</div>
 
-   <div id="wrapper">
-       <div id="id-return">
-            <a id="id-return-a" href="javascript:history.back()">Voltar </a>
-       </div>
+<div class="main-content">
+    <div class="form-container">
+        <form id="div-form" method="POST" action="#" th:action="@{/update/{id}(id=${getFormAip.id})}" th:object="${getFormAip}" >
 
+            <div id="wrapper">
+                <div id="id-return">
+                    <a id="id-return-a" href="javascript:history.back()">Voltar </a>
+                </div>
 
-       <div id="div-edit">
-            <input  id="input-edit" type="button" value="Editar" class="btn btn-primary" />
-       </div>
+                <div id="div-edit">
+                    <input id="input-edit" type="button" value="Editar" class="btn btn-primary" onclick="enableFields()" />
+                </div>
+            </div>
 
-   </div>
+            <div class="mb-3">
+                <label for="sigla" class="form-label">Informe a SIGLA da área responsável: </label>
+                <input type="text" class="form-control" id="sigla" name="sigla"
+                       th:field="*{sigla}" >
+            </div>
 
-    <div class="mb-3">
-        <label for="sigla" class="form-label">Informe a SIGLA da área responsável: </label>
-        <input type="text" class="form-control" id="sigla" name="sigla"
-               th:field="*{sigla}" >
+            <div class="mb-3">
+                <label for="nomeProjeto" class="form-label">Identifique o Sistema/Projeto:</label>
+                <input type="text" class="form-control" id="nomeProjeto" name="nomeProjeto"
+                       th:field="*{nomeProjeto}" >
+            </div>
+            <div class="mb-3">
+                <label for="volumeRegistroTitular" class="form-label">Estime o volume de registros de titulares de dados a serem
+                    manipulados:</label>
+                <input type="number" class="form-control" id="volumeRegistroTitular" name="volumeRegistroTitular"
+                       th:field="*{volumeRegistroTitular}" >
+            </div>
+            <div class="mb-3">
+                <label for="contextoTratamentoDadoPessoal" class="form-label">Qual é o contexto do tratamento de dados
+                    pessoais?</label>
+                <input type="text" class="form-control" id="contextoTratamentoDadoPessoal" name="contextoTratamentoDadoPessoal"
+                       th:field="*{contextoTratamentoDadoPessoal}" >
+            </div>
+
+            <div class="mb-3">
+                <label for="dadoSensivel" class="form-label">Existe a possibilidade tratamento de dados pessoais sensíveis?</label>
+                <input type="text" class="form-control" id="dadoSensivel" name="dadoSensivel"
+                       th:value="${getFormAip.dadoSensivel == true ? 'Sim' : 'Não'}" disabled>
+            </div>
+
+            <div class="mb-3">
+                <label for="dadosPessoais" class="form-label">Trata Dados Pessoais?</label>
+                <input type="text" class="form-control" id="dadosPessoais" name="dadosPessoais"
+                       th:value="${getFormAip.trataDadoPessoal == true ? 'Sim' : 'Não'}" disabled>
+            </div>
+
+            <div class="mb-3">
+                <label for="monitoramentoVideo" class="form-label">Envolve monitoramento por vídeo de pessoas ou áreas públicas (câmeras internas/externas)?</label>
+                <input type="text" class="form-control" id="monitoramentoVideo" name="monitoramentoVideo"
+                       th:value="${getFormAip.monitoramentoVideo == true ? 'Sim' : 'Não'}" disabled>
+            </div>
+
+            <div class="mb-3">
+                <label for="tratamentoLargaEscala" class="form-label">Há tratamento em larga escala (mais de 1 milhão de titulares)?</label>
+                <input type="text" class="form-control" id="tratamentoLargaEscala" name="tratamentoLargaEscala"
+                       th:value="${getFormAip.tratamentoLargaEscala == true ? 'Sim' : 'Não'}" disabled>
+            </div>
+
+            <div>
+                <input id="div-salvar" type="submit" value="Salvar" class="btn btn-primary" />
+                <button type="button" onclick="greetWorld()" class="btn btn-secondary">using no variable</button>
+            </div>
+
+            <script th:inline="javascript">
+                function greetWorld() {
+                    alert("hello world")
+                }
+
+                function salute(name) {
+                    alert("hello: " + name)
+                }
+
+                function enableFields() {
+                    document.getElementById('dadoSensivel').disabled = false;
+                    document.getElementById('dadosPessoais').disabled = false;
+                    document.getElementById('monitoramentoVideo').disabled = false;
+                    document.getElementById('tratamentoLargaEscala').disabled = false;
+                }
+            </script>
+
+        </form>
     </div>
+</div>
 
-    <div class="mb-3">
-        <label for="nomeProjeto" class="form-label">Identifique o Sistema/Projeto:</label>
-        <input type="text" class="form-control" id="nomeProjeto" name="nomeProjeto"
-               th:field="*{nomeProjeto}" >
-    </div>
-    <div class="mb-3">
-        <label for="volumeRegistroTitular" class="form-label">Estime o volume de registros de titulares de dados a serem
-            manipulados:</label>
-        <input type="number" class="form-control" id="volumeRegistroTitular" name="volumeRegistroTitular"
-               th:field="*{volumeRegistroTitular}" >
-    </div>
-    <div class="mb-3">
-        <label for="contextoTratamentoDadoPessoal" class="form-label">Qual é o contexto do tratamento de dados
-            pessoais?</label>
-        <input type="text" class="form-control" id="contextoTratamentoDadoPessoal" name="contextoTratamentoDadoPessoal"
-               th:field="*{contextoTratamentoDadoPessoal}" >
-    </div>
-
-    <div class="mb-3">
-        <label for="dadoSensivel">
-            Existe a possibilidade tratamento de dados pessoais sensíveis?
-        </label>
-        <input type="text" class="form-control" id="dadoSensivel" name="dadoSensivel"
-               th:value="${getFormAip.dadoSensivel == true ? 'Sim' : 'Não'}" disabled>
-    </div>
-
-    <div class="mb-3">
-        <label for="dadosPessoais">
-            Trata Dados Pessoais?
-        </label>
-        <input type="text" class="form-control" id="dadosPessoais" name="dadosPessoais"
-               th:value="${getFormAip.trataDadoPessoal == true ? 'Sim' : 'Não'}" disabled>
-    </div>
-
-    <div class="mb-3">
-        <label for="monitoramentoVideo">
-            Envolve monitoramento por vídeo de pessoas ou áreas públicas (câmeras internas/externas)?
-        </label>
-        <input type="text" class="form-control" id="monitoramentoVideo" name="monitoramentoVideo"
-               th:value="${getFormAip.monitoramentoVideo == true ? 'Sim' : 'Não'}" disabled>
-    </div>
-
-    <div class="mb-3">
-        <label for="tratamentoLargaEscala">
-            Há tratamento em larga escala (mais de 1 milhão de titulares)?
-        </label>
-        <input type="text" class="form-control" id="tratamentoLargaEscala"
-               th:value="${getFormAip.tratamentoLargaEscala == true ? 'Sim' : 'Não'}" disabled>
-    </div>
-
-    <div>
-        <input  id="div-salvar" type="submit" value="Salvar" class="btn btn-primary" />
-        <button th:onclick="greetWorld()">using no variable</button>
-    </div>
-
-
-    <script  th:inline="javascript">
-        function greetWorld() {
-            alert("hello world")
-        }
-
-        function salute(name) {
-            alert("hello: " + name)
-        }
-    </script>
-
-</form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-t5b4Gv35xt/Yjw7dP6Hgy+uf0Ul3GRy/tJAz5n/8ybNtr36uUBODuZK/4A6PKsLA" crossorigin="anonymous"></script>
 </body>
 </html>

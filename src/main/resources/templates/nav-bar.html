@@ -1,13 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  lang="pt-BR">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
   <meta charset="UTF-8">
-    <title>Title</title>
+  <title>Portal CGSI</title>
+  <style>
+    .navbar-nav .nav-item {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    .navbar-nav .nav-item:first-child {
+      margin-left: 0;
+    }
+    .navbar-nav .nav-item:last-child {
+      margin-right: 0;
+    }
+    .logout-btn {
+      margin-left: 20px;
+    }
+  </style>
 </head>
 <body>
-
 <header th:fragment="navbar">
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -21,7 +34,7 @@
             <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/new-form-aip}">Fomulário AIP</a>
+            <a class="nav-link" th:href="@{/new-form-aip}">Formulário AIP</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Formulário RIPD</a>
@@ -38,18 +51,16 @@
           <li class="nav-item">
             <a class="nav-link" th:href="@{/approveAip}">Aprovações</a>
           </li>
-
-
         </ul>
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Pesquisar</button>
         </form>
+        <button class="btn btn-outline-danger ms-3 logout-btn" type="button" th:href="@{/logout}">Logout</button>
       </div>
     </div>
   </nav>
 </header>
-
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+FA7gE5DknlunNDeBz+oyQkFlNwIN" crossorigin="anonymous"></script>
 </body>
 </html>
