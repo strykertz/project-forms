@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de ChatGPT</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .container-fluid {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+        .sidebar h5 {
+            color: #e0e0e0;
+        }
+        .sidebar .chat-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        .sidebar .chat-list button {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 10px;
+            background-color: #333;
+            color: #e0e0e0;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .chat-container {
+            flex: 1;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background-color: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            border-bottom: 1px solid #333;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #333;
+        }
+        .chat-message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #333;
+            word-break: break-word;
+            color: #e0e0e0;
+        }
+        .chat-message.user {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+        .chat-message.bot {
+            background-color: #333;
+            color: #e0e0e0;
+            align-self: flex-start;
+        }
+        .chat-input textarea {
+            background-color: #333;
+            color: #e0e0e0;
+            border: 1px solid #555;
+        }
+        .chat-input button {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="sidebar">
+        <h5>Conversas</h5>
+        <div class="chat-list">
+            <!-- Botões de conversas salvas -->
+        </div>
+    </div>
+    <div class="chat-container shadow">
+        <div class="chat-messages">
+            <!-- Mensagens do chat serão adicionadas aqui -->
+        </div>
+        <div class="chat-input input-group">
+            <textarea class="form-control" rows="2" placeholder="Digite sua mensagem..."></textarea>
+            <div class="input-group-append">
+                <button class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    const chatMessages = document.querySelector('.chat-messages');
+    const chatInput = document.querySelector('.chat-input textarea');
+    const sendButton = document.querySelector('.chat-input button');
+    const chatList = document.querySelector('.chat-list');
+
+    let conversations = {};
+    let currentConversation = 'nova';
+
+    sendButton.addEventListener('click', () => {
+        const messageText = chatInput.value.trim();
+        if (messageText) {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = messageText;
+            messageElement.classList.add('chat-message', 'user');
+            chatMessages.appendChild(messageElement);
+
+            if (!conversations[currentConversation]) {
+                conversations[currentConversation] = [];
+                addConversationButton(currentConversation);
+            }
+            conversations[currentConversation].push({ text: messageText, type: 'user' });
+
+            chatInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    });
+
+    function addConversationButton(name) {
+        const button = document.createElement('button');
+        button.textContent = name;
+        button.addEventListener('click', () => loadConversation(name));
+        chatList.appendChild(button);
+    }
+
+    function loadConversation(name) {
+        chatMessages.innerHTML = '';
+        conversations[name].forEach(message => {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message.text;
+            messageElement.classList.add('chat-message', message.type);
+            chatMessages.appendChild(messageElement);
+        });
+        currentConversation = name;
+    }
+</script>
+</body>
+</html>

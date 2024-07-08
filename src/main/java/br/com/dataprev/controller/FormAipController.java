@@ -156,4 +156,10 @@ public class FormAipController {
         mv.addObject("emailSender", emailSenderEntity);
         return new ModelAndView("redirect:/approveAip");
     }
+
+    @GetMapping("/chat-lgpd")
+    public ModelAndView getDashboard(){
+        return new ModelAndView("chat-lgpd/chat");
+
+    }
 }
